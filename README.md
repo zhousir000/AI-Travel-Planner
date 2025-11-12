@@ -1,6 +1,8 @@
-# AI Travel Planner （AI 智能旅行规划系统）
 
-借助语音输入与大语言模型自动生成行程计划、预算建议，并支持多终端同步管理旅行数据。本项目使用 Python（FastAPI）构建后端，同时提供内置前端界面，满足课程关于 AI 行程规划、费用管理、用户登录、语音功能、地图展示、Docker 发布以及 PDF 提交的要求。
+# AI Travel Planner （AI 智能旅行规划系统）
+- 镜像拉取：docker pull crpi-b8328bhg68mt1we4.cn-hangzhou.personal.cr.aliyuncs.com/zhousirproject/ai_travel_planner
+- 镜像运行：docker run -d -p 8000:8000 -e ENVIRONMENT=production -e SECRET_KEY=change-me -e DATABASE_URL=sqlite+aiosqlite:///./travel_planner.db -e LLM_PROVIDER=dashscope -e LLM_MODEL=qwen-turbo -e LLM_API_KEY=千问key -e AMAP_API_KEY=高德地图keycrpi-b8328bhg68mt1we4.cn-hangzhou.personal.cr.aliyuncs.com/zhousirproject/ai_travel_planner:latest
+- 镜像运行（mock）:docker run -d -p 8000:8000 -e ENVIRONMENT=production -e SECRET_KEY=change-me -e DATABASE_URL=sqlite+aiosqlite:///./travel_planner.db -e LLM_PROVIDER=mock crpi-b8328bhg68mt1we4.cn-hangzhou.personal.cr.aliyuncs.com/zhousirproject/ai_travel_planner:latest
 
 ## ✨ 核心特性
 
@@ -10,7 +12,6 @@
 - **用户系统与云端同步**：JWT 鉴权，行程计划持久化存储，支持多份计划管理。
 - **地图展示**：嵌入高德地图，直观查看每日打卡地点（需自备 Key）。
 - **Docker 化部署 & CI/CD**：提供 Dockerfile、docker-compose 以及 GitHub Actions（自动构建并推送到阿里云镜像仓库）。
-- **PDF 提交**：内置脚本可生成包含 GitHub 仓库地址与 README 内容的 submission.pdf。
 
 ## 🏗️ 技术栈
 
@@ -19,6 +20,7 @@
 - **前端**：Jinja2 + 原生 JS（含语音识别、行程渲染、费用管理、地图）
 - **AI 能力**：可配置阿里云 DashScope / OpenAI / Mock
 - **语音识别**：浏览器 Web Speech API；可选科大讯飞 IAT REST API
+- **部署**：Docker、Docker Compose、GitHub Actions（推送至阿里云镜像仓库）
 
 ## 📦 目录结构
 
@@ -109,4 +111,39 @@
 - 生成行程后可直接在「费用记录」中添加开销（类别、金额、备注）。
 - 系统自动合计费用总额，为行程预算做对比。
 - 后端持久化存储，登录账号可跨设备同步。
+
+## 🛳️ Docker 使用
+
+### 构建镜像
+
+```bash
+docker build -t ai-travel-planner:latest .
+```
+
+### 使用 docker-compose
+
+```bash
+docker compose up --build
+```
+
+容器启动后，通过 `http://localhost:8000` 访问。
+
+## 🤖 GitHub Actions（推送到阿里云镜像仓库）
+
+`.github/workflows/docker-publish.yml` 定义了自动构建流程。配置以下 Secrets 即可启用：
+
+- `ACR_USERNAME` / `ACR_PASSWORD`：阿里云镜像仓库登录凭据
+- `ACR_NAMESPACE` / `ACR_REPOSITORY`：目标命名空间与仓库
+
+流程会在 push 到 `main` 分支时自动构建镜像并推送到 `registry.cn-hangzhou.aliyuncs.com/<namespace>/<repository>:<git-sha>`。
+
+## 🧪 测试与质量保障
+
+- 运行静态检查（示例，可自行扩展）：
+
+  ```bash
+  python -m compileall app
+  ```
+
+- 建议补充 `pytest` 集成测试、LLM mock 测试、API 合约测试等。
 
