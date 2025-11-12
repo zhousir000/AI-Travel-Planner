@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}AI Travel Planner{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}?v={{ static_version }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    {% block head_scripts %}{% endblock %}
+  </head>
+  <body class="auth-layout">
+    <main class="auth-container">
+      <section class="auth-card">
+        <div class="auth-card__brand">
+          <span class="brand-logo">AI</span>
+          <div>
+            <h1>AI Travel Planner</h1>
+            <p class="subtitle">智能行程规划 | Voice + AI + Map</p>
+          </div>
+        </div>
+        {% block content %}{% endblock %}
+      </section>
+    </main>
+    {% block body_scripts %}
+      <script src="{{ url_for('static', path='js/auth.js') }}?v={{ static_version }}" type="module"></script>
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+  {% if amap_api_key %}
+    <script src="https://webapi.amap.com/maps?v=2.0&key={{ amap_api_key }}"></script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <section class="card" id="plannerSection">
+    <header>
+      <h2>智能行程规划</h2>
+      <p>通过语音或文字输入旅行需求，AI 将自动生成详细行程和预算建议。</p>
+    </header>
+    <form id="plannerForm" class="form wide">
+      <div class="grid three-cols">
+        <label>
+          目的地
+          <input type="text" name="destination" placeholder="例如：日本东京" required />
+        </label>
+        <label>
+          出发日期
+          <input type="date" name="start_date" />
+        </label>
+        <label>
+          结束日期
+          <input type="date" name="end_date" />
+        </label>
+      </div>
+      <div class="grid three-cols">
+        <label>
+          旅行天数
+          <input type="number" name="duration_days" min="1" max="30" placeholder="5" />
+        </label>
+        <label>
+          同行人数
+          <input type="number" name="travelers" min="1" max="10" placeholder="2" />
+        </label>
+        <label>
+          预算（元）
+          <input type="number" name="budget_amount" min="0" step="100" placeholder="10000" />
+        </label>
+      </div>
+      <div class="grid two-cols">
+        <label>
+          喜好标签
+          <input type="text" name="interests" placeholder="美食, 动漫, 亲子" />
+        </label>
+        <label>
+          旅行风格
+          <input type="text" name="travel_style" placeholder="慢节奏, 探险" />
+        </label>
+      </div>
+      <label class="voice-row">
+        补充说明
+        <textarea name="notes" rows="3" placeholder="带孩子，想重点体验科技类景点"></textarea>
+        <div class="voice-controls">
+          <button type="button" id="voiceBtn" class="ghost-btn">🎙️ 语音输入</button>
+          <span id="voiceStatus" class="muted">等待语音识别...</span>
+        </div>
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="primary-btn">生成旅行方案</button>
+        <div id="plannerFeedback" class="muted"></div>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" id="planListSection">
+    <header>
+      <h2>我的行程</h2>
+      <p>选择历史行程查看或继续管理费用。</p>
+    </header>
+    <ul id="planList" class="plan-list"></ul>
+  </section>
+
+  <section class="card plan-details hidden" id="planDetailsSection">
+    <header class="plan-header">
+      <div>
+        <h2 id="planTitle">行程标题</h2>
+        <p id="planMeta" class="muted">目的地与时间范围</p>
+      </div>
+      <div id="planBudget" class="budget-summary"></div>
+    </header>
+    <div class="layout">
+      <article class="itinerary">
+        <h3>行程安排</h3>
+        <div id="itineraryTimeline" class="timeline"></div>
+      </article>
+      <aside class="map-pane">
+        <h3>地图视图</h3>
+        <div id="mapContainer" class="map"></div>
+        <div id="mapHint" class="muted small"></div>
+      </aside>
+    </div>
+    <section class="expenses">
+      <div class="expenses-header">
+        <h3>费用记录</h3>
+        <span id="expenseTotal" class="tag"></span>
+      </div>
+      <form id="expenseForm" class="form inline">
+        <input type="text" name="category" placeholder="类别（餐饮）" required />
+        <input type="number" name="amount" min="0" step="0.01" placeholder="金额" required />
+        <input type="text" name="note" placeholder="备注" />
+        <button type="submit" class="secondary-btn small">添加费用</button>
+      </form>
+      <ul id="expenseList" class="expense-list"></ul>
+    </section>
+  </section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="card">
+    <header>
+      <h2>运行配置</h2>
+      <p>在此页面填写第三方 API Key，仅存储在浏览器本地并在调用接口时发送。</p>
+    </header>
+    <form id="clientSettingsForm" class="form wide">
+      <label>
+        LLM Provider
+        <select name="llmProvider">
+          <option value="mock">Mock（内置示例）</option>
+          <option value="dashscope">阿里云 DashScope</option>
+          <option value="openai">OpenAI</option>
+        </select>
+      </label>
+      <label>
+        LLM API Key
+        <input type="password" name="llmApiKey" placeholder="sk-..." />
+      </label>
+      <label>
+        LLM Endpoint (可选)
+        <input type="url" name="llmEndpoint" placeholder="https://..." />
+      </label>
+      <label>
+        语音识别 Provider
+        <select name="speechProvider">
+          <option value="web">浏览器 Web Speech API</option>
+          <option value="iflytek">科大讯飞 iFlyTek</option>
+        </select>
+      </label>
+      <label>
+        iFlyTek App ID
+        <input type="text" name="iflytekAppId" />
+      </label>
+      <label>
+        iFlyTek API Key
+        <input type="password" name="iflytekApiKey" />
+      </label>
+      <label>
+        高德地图 Key
+        <input type="text" name="amapKey" placeholder="在地图上展示 POI 与路线" />
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="primary-btn">保存</button>
+        <button type="button" id="clearSettingsBtn" class="ghost-btn">清除</button>
+        <span id="settingsFeedback" class="muted"></span>
+      </div>
+    </form>
+  </section>
+{% endblock %}

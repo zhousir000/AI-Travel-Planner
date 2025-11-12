@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}AI Travel Planner{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}?v={{ static_version }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    {% block head_scripts %}{% endblock %}
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <span class="brand-logo">AI</span>
+          <div>
+            <h1>AI Travel Planner</h1>
+            <p class="subtitle">智能行程规划 | Voice + AI + Map</p>
+          </div>
+        </div>
+        <nav class="nav-actions">
+          <a class="ghost-btn" href="{{ url_for('settings_page') }}">设置</a>
+          <button id="logoutBtn" class="ghost-btn danger" type="button">退出登录</button>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <script>
+      window.appConfig = {
+        speechProvider: "{{ speech_provider }}",
+        llmProvider: "{{ llm_provider }}",
+        amapKey: "{{ amap_api_key or '' }}",
+      };
+    </script>
+    {% block body_scripts %}
+    <script src="{{ url_for('static', path='js/app.js') }}?v={{ static_version }}" type="module"></script>
+    {% endblock %}
+  </body>
+</html>

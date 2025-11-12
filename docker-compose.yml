@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: ai-travel-planner
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - SECRET_KEY=${SECRET_KEY:-change-me}
+      - DATABASE_URL=${DATABASE_URL:-sqlite+aiosqlite:///./travel_planner.db}
+      - LLM_PROVIDER=${LLM_PROVIDER:-mock}
+      - LLM_MODEL=${LLM_MODEL:-qwen-turbo}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      - LLM_ENDPOINT=${LLM_ENDPOINT:-}
+      - SPEECH_PROVIDER=${SPEECH_PROVIDER:-web}
+      - IFLYTEK_APP_ID=${IFLYTEK_APP_ID:-}
+      - IFLYTEK_API_KEY=${IFLYTEK_API_KEY:-}
+      - AMAP_API_KEY=${AMAP_API_KEY:-}
+    volumes:
+      - ./.env.example:/app/.env:ro

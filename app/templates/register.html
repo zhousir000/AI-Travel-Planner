@@ -1,0 +1,64 @@
+{% extends "auth_base.html" %}
+
+{% block title %}注册 - AI Travel Planner{% endblock %}
+
+{% block content %}
+  <header class="auth-card__header">
+    <h2>创建账号</h2>
+    <p class="muted">注册后可同步保存您的旅行计划。</p>
+  </header>
+  <form
+    id="registerForm"
+    class="auth-form"
+    data-auth-form
+    data-mode="register"
+    data-prefill-email="{{ prefill_email or '' }}"
+    novalidate
+  >
+    <div class="form-field">
+      <label for="registerEmail">用户名/邮箱</label>
+      <input
+        id="registerEmail"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="username"
+        required
+        placeholder="you@example.com"
+      />
+      <p class="field-error" data-error-for="email" id="registerEmailError" aria-live="polite"></p>
+    </div>
+    <div class="form-field">
+      <label for="registerPassword">密码</label>
+      <input
+        id="registerPassword"
+        name="password"
+        type="password"
+        autocomplete="new-password"
+        required
+        minlength="6"
+        placeholder="至少 6 位"
+      />
+      <p class="field-error" data-error-for="password" id="registerPasswordError" aria-live="polite"></p>
+    </div>
+    <div class="form-field">
+      <label for="registerConfirmPassword">确认密码</label>
+      <input
+        id="registerConfirmPassword"
+        name="confirm_password"
+        type="password"
+        autocomplete="new-password"
+        required
+        minlength="6"
+        placeholder="再次输入密码"
+      />
+      <p class="field-error" data-error-for="confirm_password" id="registerConfirmError" aria-live="polite"></p>
+    </div>
+    <button type="submit" class="primary-btn" data-submit data-loading-text="注册中...">注册</button>
+    <p class="status-message" id="formFeedback" role="status" aria-live="polite"></p>
+  </form>
+  <p class="auth-switch">
+    已有账号？
+    <a class="text-link" href="{{ url_for('login_page') }}" id="goToLoginLink">返回登录</a>
+  </p>
+{% endblock %}
